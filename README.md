@@ -9,12 +9,12 @@ CFn内のUserDataでも可です。
     yum install -y git gcc openssl-devel libffi-devel
 
     git clone https://github.com/shogomuranushi/c-ansible.git
-    cat <<EOF > ansible/group_vars/all.yml
+    cat <<EOF > c-ansible/group_vars/all.yml
       aws_region: "ap-northeast-1"
       sshd: stopped
     EOF
     
-    ansible-playbook ansible/xxx.yml
+    ansible-playbook c-ansible/xxx.yml
 
 # 必要なIAMロール権限
 - AmazonEC2RoleforSSM
