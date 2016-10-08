@@ -1,3 +1,6 @@
+####################
+# Initialize Setting
+####################
 - name: (Initialize) Timezone setting
   file: src="/usr/share/zoneinfo/Asia/Tokyo" dest="/etc/localtime" state=link force=yes
   notify: restart rsyslog agent  
@@ -40,12 +43,6 @@
     passno: '0'
     dump: '0'
     state: present
-
-- include: initialize-CentOS6.yml
-  when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 6
-
-- include: initialize-CentOS7.yml
-  when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 7
 
 - name: sshd disable
   service: name=sshd state=stopped enabled=no
