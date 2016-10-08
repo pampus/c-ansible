@@ -66,3 +66,12 @@
 - name: install inspector agent
   shell: bash /usr/local/src/install
   when: check_codedeploy.rc == 1
+
+####################
+# CloudWatch collectd
+####################
+- name: install cloudwatch collectd to Amazon Linux
+  yum: name=collectd
+
+- name: Start and Enable cloudwatch collectd
+  service: name=collectd state=started enabled=yes
