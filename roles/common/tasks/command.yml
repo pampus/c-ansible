@@ -1,0 +1,30 @@
+- name: (Investigation Command) yum install
+  yum: name={{ item }}
+  with_items:
+    - dstat
+    - sysstat
+    - iotop
+    - mlocate
+    - telnet
+    - htop
+    - strace
+    - monit
+
+- name: (Need Command) yum install
+  yum: name={{ item }}
+  with_items:
+    - vim
+    - wget
+    - tree
+    - postfix
+    - unzip
+    - make
+    - gcc
+    - gcc-c++
+    - screen
+    - mailx
+
+- name: Start and Enable to Command
+  service: name={{ item }} state=started enabled=yes
+  with_items:
+    - monit
