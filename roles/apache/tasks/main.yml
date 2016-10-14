@@ -24,15 +24,16 @@
   with_items:
     - "{{ site }}"
 
-## Include when OS and Version
-- include: apache_CentOS6.yml
-  when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 6
+- name: Change the httpd.conf to template file ( Apache 2.2 )
+  copy: src=ver2.2/etc/httpd/ dest=/etc/httpd/ owner=root group=root mode=0644
+  notify: restart httpd
 
-- include: apache_CentOS6.yml
-  when: ansible_distribution == 'Amazon'
+- name: logrotate ( Apache 2.2 )
+  copy: src=centos6/etc/logrotate.d/ dest=/etc/logrotate.d/ owner=root group=root mode=0644
 
-- include: apache_CentOS7.yml
-  when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 7
+- name: monit Apache 2.2 )
+  copy: src=centos6/etc/monit.d/ dest=/etc/monit.d/ owner=root group=root mode=0644
+
 
 ## Common Conifgration ( CloudWatch Logs & Datadog Integration & logrotate )
 - name: copy {{ awslogs_config_dir_path }}
@@ -40,8 +41,3 @@
   with_items:
     - "{{ site }}"
   notify: restart awslogs agent
-
-- name: copy /etc/dd-agent/
-  copy: src=common/etc/dd-agent/ dest=/etc/dd-agent/ backup=yes
-  when: datadog == true
-  notify: restart datadog-agent
