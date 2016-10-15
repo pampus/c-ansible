@@ -1,3 +1,6 @@
+# 前提
+Supprt OS : Amazon Linux AMI 2016.09.0
+
 # 使い方
 UserDataに以下のコードを挿入し実行してください。
 CFn内のUserDataでも可です。
