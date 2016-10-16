@@ -9,10 +9,6 @@
   copy: src=common/etc/httpd/conf.d/ dest=/etc/httpd/conf.d/ backup=yes
   notify: restart httpd
 
-## Makes VirtualHost
-- name: Makes to Default DocumentRoot
-  file: path=/var/www/_default_ state=directory owner=root group=root mode=0755
-
 - name: Makes to VirtualHost
   template: src=virtualhost.conf dest=/etc/httpd/conf.d/{{ item.domain }}.conf
   with_items:
