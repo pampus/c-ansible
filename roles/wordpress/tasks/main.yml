@@ -6,6 +6,9 @@
 - name: Extract archive
   command: chdir={{ wp_dir }} /bin/tar xvf wordpress-{{ wp_version }}.tar.gz creates={{ wp_dir }}/wordpress
 
+- name: Install MySQL-python27
+  yum: name=MySQL-python27 state=present
+
 #- name: Add group "wordpress"
 #  group: name=wordpress
 
