@@ -8,4 +8,6 @@
     wp_dir: /var/www/html
     mysql_host: localhost
     mysql_port: 3306
+    auto_up_disable: false
+    core_update_level: true
     EOF
