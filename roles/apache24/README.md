@@ -42,7 +42,7 @@
 |IncludeOptional|       |conf.d/*.conf|x      |
 ||       ||x      |
 
-## <VirtualhostName>.conf
+## VirtualhostName.conf
 |Parameter|Require|Default|Changed|
 | ------- |:-----:|-------|:-----:|
 |ServerName   |       |www.test1.com                                 |o      |
