@@ -32,6 +32,6 @@
 | ------- |:-----:|-------|:-----:|
 |ServerName   |       |www.test1.com                                 |o      |
 |DocumentRoot |       |/var/www/www.test1.com/                       |o      |
-|CustomLog    |       |logs/{{ item.domain }}-access_log combined-elb|o      |
-|ErrorLog     |       |logs/{{ item.domain }}-error_log              |o      |
+|CustomLog    |       |logs/www.test1.com-access_log combined-elb|o      |
+|ErrorLog     |       |logs/www.test1.com-error_log              |o      |
 
