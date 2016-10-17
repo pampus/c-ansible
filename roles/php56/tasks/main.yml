@@ -27,6 +27,7 @@
 
 - name: Install PHP Composer
   shell: |
-    curl -sS https://getcomposer.org/installer | php
-    mv composer.phar /usr/local/bin/composer
+    cd ~
+    /usr/bin/curl -sS https://getcomposer.org/installer | /usr/bin/php
+    mv ~/composer.phar /usr/local/bin/composer
   when: not check_composer_file.stat.exists
