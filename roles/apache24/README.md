@@ -9,7 +9,7 @@
 # Default Parameter for Apache
 ## httpd.conf
 |Parameter|Require|Default|Changed|
-| ------- |:-----:|:-----:|:-----:|
+| ------- |:-----:|-------|:-----:|
 |Listen   |       |80     |x      |
 |User     |       |apache |x      |
 |Group    |       |apache |x      |
