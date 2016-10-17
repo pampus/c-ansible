@@ -3,7 +3,7 @@
   get_url: url=https://ja.wordpress.org/latest-ja.zip dest={{ wp_dir }}/latest-ja.zip
 
 - name: Extract archive
-  command: chdir={{ wp_dir }} /bin/unzip latest-ja.zip creates={{ wp_dir }}/wordpress
+  command: chdir={{ wp_dir }} /usr/bin/unzip latest-ja.zip creates={{ wp_dir }}/wordpress
 
 - name: Install MySQL-python27
   yum: name=MySQL-python27 state=present
