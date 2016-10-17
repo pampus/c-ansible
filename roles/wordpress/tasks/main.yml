@@ -1,19 +1,12 @@
 ---
 - name: Download WordPress
-  get_url: url=http://wordpress.org/wordpress-{{ wp_version }}.tar.gz dest={{ wp_dir }}/wordpress-{{ wp_version }}.tar.gz
-           sha256sum="{{ wp_sha256sum }}"
+  get_url: url=https://ja.wordpress.org/latest-ja.zip dest={{ wp_dir }}/latest-ja.zip
 
 - name: Extract archive
-  command: chdir={{ wp_dir }} /bin/tar xvf wordpress-{{ wp_version }}.tar.gz creates={{ wp_dir }}/wordpress
+  command: chdir={{ wp_dir }} /bin/unzip latest-ja.zip creates={{ wp_dir }}/wordpress
 
 - name: Install MySQL-python27
   yum: name=MySQL-python27 state=present
-
-#- name: Add group "wordpress"
-#  group: name=wordpress
-
-#- name: Add user "wordpress"
-#  user: name=wordpress group=wordpress home={{ wp_dir }}/wordpress/
 
 - name: Fetch random salts for WordPress config
   local_action: command curl https://api.wordpress.org/secret-key/1.1/salt/
