@@ -25,9 +25,9 @@
   stat: path="/usr/local/bin/composer"
   register: check_composer_file
 
-- name: Install PHP Composer
-  shell: |
-    cd ~
-    /usr/bin/curl -sS https://getcomposer.org/installer | /usr/bin/php
-    mv ~/composer.phar /usr/local/bin/composer
-  when: not check_composer_file.stat.exists
+#- name: Install PHP Composer
+#  shell: |
+#    cd ~
+#    /usr/bin/curl -sS https://getcomposer.org/installer | /usr/bin/php
+#    mv ~/composer.phar /usr/local/bin/composer
+#  when: not check_composer_file.stat.exists
