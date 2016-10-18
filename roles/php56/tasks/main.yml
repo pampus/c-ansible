@@ -18,7 +18,7 @@
   notify: restart httpd
 
 - name: Configure php.ini
-  copy: src=php.ini dest=/etc/php.ini owner=root group=root mode=0644
+  template: src=php.ini dest=/etc/php.ini owner=root group=root mode=0644
   notify: restart httpd
 
 - name: check exists PHP Composer
