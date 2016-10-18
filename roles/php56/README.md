@@ -27,4 +27,4 @@
 ## php.conf
 |Parameter|Require|Default|Changed|
 | ------- |:-----:|-------|:-----:|
-|         |       |       |       |
+|timezone |       |Asia/Tokyo|o      |
