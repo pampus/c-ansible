@@ -10,13 +10,17 @@
 ## 概要
 * yumでinstallした時と構成は同じ
 * デフォルトからの差分と代表的な設定値は[Default Parameter for Apache]に記載
+
 ## 複数のVirtualHostを生成
 * [c-ansible/roles/apache24/vars/main.yml]に変数を定義すると、自動的にVirtualHostのconfやdirectoryを作成してくれる
+
 ## ログの外出しとローテーション：accesslog / errorlog (VirtualHostのログ含む)
 * logrotateで31世代保管（日次）
 * CloudWatchLogs AgentでリアルタイムでCloudWatchLogsに転送
+
 ## メトリクスの外出し：Apacheのメトリクス（実装予定。しばし待たれよ）
 * MaxClient数などをcollectdを経由し、CloudWatchに飛ばす予定。その値を元に自動制御も検討中。
+
 ## 自動復旧（実装予定。しばし待たれよ）
 * 障害検知時にmonit(1分間隔)でrestart。5分以上復旧しない場合はCloudWatchで自動stop/start。
 * 障害判定条件 => process down / etc...
