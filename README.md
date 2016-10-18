@@ -31,3 +31,12 @@ CFn内のUserDataでも可です。
 -- CloudWatch Logs Agentのconfファイルを配置する
 - プロセスがある場合
 -- monitのconfを配置する
+
+# CloudFormationとの線引
+疎結合性を高めるために以下の線引で開発する
+## Ansible側
+* xxx.ymlを作成の際に、xxx.shも作成する
+* xxx.shにはuserdataで実行して欲しい処理を記載する
+* CloudFormation側のuserdataの定義で、xxx.shをcurlでDLし、ローカル実行させる
+* CloudFormationから変数を渡したい場合は、/var/tmp/catalogpack_vars.txtに変数を埋め込んでもらう
+* xxx.shの冒頭で/var/tmp/catalogpack_vars.txtを読み込み、CloudFormationから変数を受け取る
