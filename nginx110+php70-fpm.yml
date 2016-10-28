@@ -4,3 +4,4 @@
   roles:
       - common
       - nginx110
+      - php70-fpm
