@@ -9,7 +9,7 @@ CFn内のUserDataでも可です。
     #!/bin/sh
     yum install -y git
     git clone https://github.com/cloudpack/c-ansible.git
-    source /var/tmp/catalogpack_vars.txt
+    touch /var/tmp/catalogpack_vars.txt
     
     sh c-ansible/xxx.sh
 
