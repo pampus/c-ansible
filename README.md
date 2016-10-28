@@ -7,19 +7,11 @@ CFn内のUserDataでも可です。
 
 ## UserData Version
     #!/bin/sh
-    yum update -y
-    pip install ansible
-    yum install -y git gcc openssl-devel libffi-devel
-
-    cd ~
+    yum install -y git
     git clone https://github.com/cloudpack/c-ansible.git
-    Region=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed -e 's/.$//g')
-    cat <<EOF > c-ansible/group_vars/all.yml
-      aws_region: "${Region}"
-      sshd: enabled
-    EOF
+    source /var/tmp/catalogpack_vars.txt
     
-    /usr/local/bin/ansible-playbook c-ansible/xxx.yml
+    sh c-ansible/xxx.sh
 
 # 必要なIAMロール権限
 - AmazonEC2RoleforSSM
