@@ -19,6 +19,14 @@ sshd: ${sshd}
 EOF
 
 ##########################
+## Apache Parameter
+##########################
+cat <<EOF > c-ansible/roles/apache24/vars/main.yml
+site:
+ - { domain: "www.test1.com", owner: "root", group: "root" }
+ - { domain: "www.test2.co.jp", owner: "apache", group: "root" }
+EOF
+##########################
 ## PHP Parameter
 ##########################
 cat <<EOF > c-ansible/roles/php56/vars/main.yml

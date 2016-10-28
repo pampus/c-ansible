@@ -19,6 +19,14 @@ sshd: ${sshd}
 EOF
 
 ##########################
+## Apache Parameter
+##########################
+cat <<EOF > c-ansible/roles/apache24/vars/main.yml
+site:
+ - { domain: "www.test1.com", owner: "root", group: "root" }
+ - { domain: "www.test2.co.jp", owner: "apache", group: "root" }
+EOF
+##########################
 ## Ansible Exec
 ##########################
 /usr/local/bin/ansible-playbook c-ansible/apache24+tomcat8.yml
