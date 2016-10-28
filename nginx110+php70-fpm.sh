@@ -23,8 +23,8 @@ EOF
 ##########################
 cat <<EOF > c-ansible/roles/nginx110/vars/main.yml
 site:
- - { domain: "www.test1.com", owner: "root", group: "root" }
- - { domain: "www.test2.co.jp", owner: "nginx", group: "root" }
+ - { domain: "${site1_domain}", owner: "${site1_owner}", group: "${site1_group}" }
+ - { domain: "${site2_domain}", owner: "${site2_owner}", group: "${site2_group}" }
 EOF
 ##########################
 ## PHP Parameter

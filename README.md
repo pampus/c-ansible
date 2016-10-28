@@ -10,7 +10,8 @@ CFn内のUserDataでも可です。
     yum install -y git
     git clone https://github.com/cloudpack/c-ansible.git
     touch /var/tmp/catalogpack_vars.txt
-    
+    ## 以下、xxx.shの変数を変更したい時は/var/tmp/catalogpack_vars.txtに変数を定義する
+
     sh c-ansible/xxx.sh
 
 # 必要なIAMロール権限
