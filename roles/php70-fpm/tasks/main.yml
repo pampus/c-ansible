@@ -16,6 +16,10 @@
     - php70-xml
     - php70-gd
 
+- name: Configure php.ini
+  template: src=php.ini dest=/etc/php.ini owner=root group=root mode=0644
+  notify: restart nginx
+
 - name: copy /etc/php-fpm.d/
   copy: src=etc/php-fpm.d/ dest=/etc/php-fpm.d/ backup=yes
   notify: restart php-fpm

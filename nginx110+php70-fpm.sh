@@ -21,23 +21,10 @@ EOF
 ##########################
 ## PHP Parameter
 ##########################
-cat <<EOF > c-ansible/roles/php56/vars/main.yml
+cat <<EOF > c-ansible/roles/php70-fpm/vars/main.yml
 timezone: ${timezone}
-EOF
-##########################
-## Wordpress Parameter
-##########################
-cat <<EOF > c-ansible/roles/wordpress/vars/main.yml
-wp_db_name: ${db_name}
-wp_db_user: ${db_user}
-wp_db_password: ${db_password}
-wp_dir: /var/www/html
-mysql_host: ${db_host}
-mysql_port: ${db_port}
-auto_up_disable: false
-core_update_level: true
 EOF
 ##########################
 ## Ansible Exec
 ##########################
-/usr/local/bin/ansible-playbook c-ansible/apache24+php56+wordpress.yml
+/usr/local/bin/ansible-playbook c-ansible/nginx110+php70-fpm.yml

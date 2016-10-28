@@ -24,7 +24,7 @@
     - php56-pecl-apc
 
 # Default Parameter for PHP56
-## php.conf
+## php.ini
 |Parameter|Require|Default|Changed|
 | ------- |:-----:|-------|:-----:|
 |timezone |       |Asia/Tokyo|o      |
