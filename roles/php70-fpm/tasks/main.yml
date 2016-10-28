@@ -11,7 +11,6 @@
     - php70-mysqlnd
     - php70-opcache
     - php70-pdo
-    - php70-pear
     - php70-pecl-apcu
     - php70-process
     - php70-xml
