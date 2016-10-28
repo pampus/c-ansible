@@ -12,9 +12,10 @@ CFn内のUserDataでも可です。
     yum install -y git gcc openssl-devel libffi-devel
 
     cd ~
-    git clone https://github.com/shogomuranushi/c-ansible.git
+    git clone https://github.com/cloudpack/c-ansible.git
+    Region=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed -e 's/.$//g')
     cat <<EOF > c-ansible/group_vars/all.yml
-      aws_region: "ap-northeast-1"
+      aws_region: "${Region}"
       sshd: enabled
     EOF
     
