@@ -1,5 +1,6 @@
-- hosts: all
-#  connection: local
+- hosts: localhost
+  connection: local
   become: yes
   roles:
+      - php70
       - wordpress
