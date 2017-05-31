@@ -1,8 +1,24 @@
 - name: restart awslogs agent
-  service: name=awslogs state=restarted enabled=yes
+  service:
+    name: awslogs
+    state: restarted
 
 - name: restart rsyslog agent
-  service: name=rsyslog state=restarted enabled=yes
+  service:
+    name: rsyslog
+    state: restarted
 
 - name: restart codedeploy agent
-  service: name=codedeploy-agent state=restarted enabled=yes
+  service:
+    name: codedeploy-agent
+    state: restarted
+
+- name: restart monit
+  service:
+    name: monit
+    state: restarted
+
+- name: restart postfix
+  service:
+    name: postfix
+    state: restarted

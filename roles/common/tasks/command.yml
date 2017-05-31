@@ -1,8 +1,9 @@
 ####################
-# Command Install
+# Package Install
 ####################
-- name: (Investigation Command) yum install
-  yum: name={{ item }}
+- name: install necessary packages for investigation
+  yum:
+    name: "{{ item }}"
   with_items:
     - dstat
     - sysstat
@@ -11,13 +12,15 @@
     - telnet
     - htop
     - strace
-    - monit
+    - tcpdump
 
-- name: (Need Command) yum install
-  yum: name={{ item }}
+- name: install other necessary packages
+  yum:
+    name: "{{ item }}"
   with_items:
     - vim
     - wget
+    - screen
     - tree
     - postfix
     - unzip
@@ -26,8 +29,30 @@
     - gcc-c++
     - screen
     - mailx
+    - monit
 
-- name: Start and Enable to Command
-  service: name={{ item }} state=started enabled=yes
+- name: remove unnecessary packages
+  yum:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - sendmail
+ 
+- name: copy monit.conf from template
+  template:
+    src: etc/monit.conf
+    dest: /etc/monit.conf
+    owner: root
+    group: root
+    mode: '0600'
+    backup: yes
+  notify: restart monit
+
+- name: start and enable service
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
   with_items:
     - monit
+    - postfix
