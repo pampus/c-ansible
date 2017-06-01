@@ -1,40 +1,72 @@
 ####################
 # Initialize Setting
 ####################
-- name: (Initialize) Timezone setting
-  file: src="/usr/share/zoneinfo/Asia/Tokyo" dest="/etc/localtime" state=link force=yes
-  notify: restart rsyslog agent  
+- name: timezone setting
+  file:
+    src: /usr/share/zoneinfo/Asia/Tokyo
+    dest: /etc/localtime
+    state: link
+    force: yes
+  notify: restart rsyslog agent 
+  tags:
+    - timezone
 
-- name: (Initialize) motd.sh setting
-  copy: src=etc/profile.d/ dest=/etc/profile.d/ owner=root group=root mode=0755
+- name: motd.sh setting
+  copy:
+    src: etc/profile.d/motd.sh
+    dest: /etc/profile.d/motd.sh
+    owner: root
+    group: root
+    mode: 0755
+  tags:
+    - motd
 
-- name: (Initialize) history file setting 1
-  lineinfile:
+- name: history size setting
+  blockinfile:
     dest: /etc/bashrc
-    line: HISTSIZE=10000
+    content: |
+      HISTSIZE=10000
+      HISTTIMEFORMAT='%Y/%m/%d %H:%M:%S '
+  tags:
+    - history
 
-- name: (Initialize) history file setting 2
-  lineinfile:
-    dest: /etc/bashrc
-    line: HISTTIMEFORMAT='%Y/%m/%d %H:%M:%S '
+- name: logrotate setting
+  copy:
+    src: etc/logrotate.d/
+    dest: /etc/logrotate.d/
+    owner: root
+    group: root
+    mode: 0755
+  tags:
+    - logrotate
 
-- name: (Initialize) Logrotate.d
-  copy: src=etc/logrotate.d/ dest=/etc/logrotate.d/ owner=root group=root mode=0755
-
-- set_fact:
+- name: make swap
+  set_fact:
     swap_file_path: /swapfile
-- command: dd if=/dev/zero of={{ swap_file_path }} bs={{ ansible_memtotal_mb }} count=1M
+  tags:
+    - swap
+- command: dd if=/dev/zero of={{ swap_file_path }} bs=2048 count=1M
   args:
     creates: '{{ swap_file_path }}'
+  tags:
+    - swap
 - file:
     path: '{{ swap_file_path }}'
     mode: '0600'
+  tags:
+    - swap
 - command: file {{ swap_file_path }}
   register: swap_file_test
+  tags:
+    - swap
 - command: mkswap {{ swap_file_path }}
   when: swap_file_test.stdout.find('swap file') == -1
+  tags:
+    - swap
 - command: swapon {{ swap_file_path }}
   when: ansible_swaptotal_mb < 1
+  tags:
+    - swap
 - mount:
     name: swap
     src: '{{ swap_file_path }}'
@@ -43,7 +75,11 @@
     passno: '0'
     dump: '0'
     state: present
+  tags:
+    - swap
 
 - name: sshd disable
   service: name=sshd state=stopped enabled=no
-  when: sshd == "stopped"
+  when: sshd is defined and sshd == "stopped"
+  tags:
+    - sshd

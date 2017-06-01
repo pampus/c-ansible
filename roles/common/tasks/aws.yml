@@ -1,55 +1,93 @@
 ####################
 # CloudWatch Logs
 ####################
-- name: install awslogs agent to Amazon Linux 
+- name: install awslogs agent
   yum: name=awslogs
-
-- name: Start and Enable awslogs
-  service: name=awslogs state=started enabled=yes
-
-- name: template copy {{ awslogs_config_dir_path }}awslogs.conf
-  template: src=etc/awslogs/awslogs.conf dest={{ awslogs_config_dir_path }}awslogs.conf owner=root group=root mode=0644 backup=yes
-  notify: restart awslogs agent
+  tags:
+    - awslogs
 
 - name: set region to /etc/awslogs/awscli.conf
-  replace: dest=/etc/awslogs/awscli.conf regexp=us-east-1 replace={{ aws_region }}
+  replace:
+    dest: /etc/awslogs/awscli.conf
+    regexp: "region = .*"
+    replace: "region = {{ aws_region }}"
   notify: restart awslogs agent
-  when: "ansible_distribution == 'Amazon'"
+  when: awslogs is defined and awslogs == "enable"
+  tags:
+    - awslogs
+
+- name: copy awslogs.conf from template
+  template:
+    src: etc/awslogs/awslogs.conf.j2
+    dest: /etc/awslogs/awslogs.conf
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  notify: restart awslogs agent
+  when: awslogs is defined and awslogs == "enable"
+  tags:
+    - awslogs
+
+- name: start and enable awslogs
+  service:
+    name: awslogs
+    state: started
+    enabled: yes
+  when: awslogs is defined and awslogs == "enable"
+  tags:
+    - awslogs
 
 ####################
 # SSM Agent
 ####################
-- name: download ssm agent
-  get_url: url="https://amazon-ssm-{{ aws_region }}.s3.amazonaws.com/latest/linux_amd64/amazon-ssm-agent.rpm" dest="/usr/local/src/amazon-ssm-agent.rpm" mode=0755
 - name: install ssm agent
-  yum: name=/usr/local/src/amazon-ssm-agent.rpm state=present
+  yum:
+    name: "https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm"
+    state: present
+  tags:
+    - ssm
 
-- name: Start and Enable ssm agent
-  service: name=amazon-ssm-agent state=started enabled=yes
+- name: start and enable ssm agent
+  service:
+    name: amazon-ssm-agent
+    state: started
+    enabled: yes
+  tags:
+    - ssm
 
 ####################
 # CodeDeploy Agent
 ####################
-- name: Install Ruby for CodeDeploy
-  yum: name=ruby state=present
+- name: install ruby for CodeDeploy
+  yum:
+    name: ruby
+    state: present
+  tags:
+    - codedeploy
 
 - name: check CodeDeploy agent
   shell: rpm -q codedeploy-agent
   register: check_codedeploy
   failed_when: False
+  tags:
+    - codedeploy
 
-- name: Download CodeDeploy agent Installer
-  get_url: url="https://aws-codedeploy-{{ aws_region }}.s3.amazonaws.com/latest/install" dest="/tmp/code-deploy-install" mode=0755
+- name: download CodeDeploy agent installer
+  get_url:
+    url: "https://aws-codedeploy-{{ aws_region }}.s3.amazonaws.com/latest/install"
+    dest: /tmp/code-deploy-install
+    mode: 0755
   when: check_codedeploy.rc == 1
+  tags:
+    - codedeploy
 
-- name: Install CodeDeploy agent
+- name: install CodeDeploy agent
   shell: /tmp/code-deploy-install auto
   when: check_codedeploy.rc == 1
   notify: restart codedeploy agent
-
-- name: Enable CodeDeploy agent for CentOS
-  shell: /bin/systemctl enable codedeploy-agent
-  when: ansible_distribution == 'CentOS'
+  tags:
+    - codedeploy
 
 ####################
 # inspector agent
@@ -58,20 +96,21 @@
   shell: rpm -q AwsAgent
   register: check_inspector
   failed_when: False
+  tags:
+    - inspector
 
 - name: download inspector agent
-  get_url: url="https://d1wk0tztpsntt1.cloudfront.net/linux/latest/install" dest="/usr/local/src/install" mode=0755
+  get_url:
+    url: "https://d1wk0tztpsntt1.cloudfront.net/linux/latest/install"
+    dest: /usr/local/src/install
+    mode: 0755
   when: check_inspector.rc == 1
-
+  tags:
+    - inspector
+    
 - name: install inspector agent
   shell: bash /usr/local/src/install
   when: check_codedeploy.rc == 1
+  tags:
+    - inspector
 
-####################
-# CloudWatch collectd
-####################
-- name: install cloudwatch collectd to Amazon Linux
-  yum: name=collectd
-
-- name: Start and Enable cloudwatch collectd
-  service: name=collectd state=started enabled=yes

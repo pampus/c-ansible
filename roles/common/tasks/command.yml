@@ -18,6 +18,7 @@
   yum:
     name: "{{ item }}"
   with_items:
+    - epel-release
     - vim
     - wget
     - screen
@@ -40,7 +41,7 @@
  
 - name: copy monit.conf from template
   template:
-    src: etc/monit.conf
+    src: etc/monit.conf.j2
     dest: /etc/monit.conf
     owner: root
     group: root

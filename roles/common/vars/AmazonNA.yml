@@ -1,2 +1,0 @@
-awslogs_config_dir_path: /etc/awslogs/
-awslogs_statefile: /var/lib/awslogs/agent-state
