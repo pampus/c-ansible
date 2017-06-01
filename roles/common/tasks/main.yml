@@ -1,3 +1,4 @@
+---
 - include: command.yml
 - include: aws.yml
 - include: initialize.yml
