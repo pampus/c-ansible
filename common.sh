@@ -15,10 +15,11 @@ git clone https://github.com/cloudpack/c-ansible.git
 aws_region=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed -e 's/.$//g')
 cat <<EOF > c-ansible/group_vars/all.yml
 aws_region: "${aws_region}"
-sshd: ${sshd}
 EOF
 
 ##########################
 ## Ansible Exec
 ##########################
-/usr/local/bin/ansible-playbook c-ansible/common.yml
+/usr/local/bin/ansible-playbook -i "localhost," -c local c-ansible/common.yml\
+  -e aws_region=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed -e 's/.$//g')
+  -e awslogs=enable
