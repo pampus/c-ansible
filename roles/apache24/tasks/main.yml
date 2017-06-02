@@ -1,43 +1,97 @@
-## Install and Configuration
+---
 - name: yum install for Apache Web Server
-  yum: name=httpd24
+  yum:
+    name: httpd24
+  tags:
+    - apache
 
-- name: Start and Enable to Apache
-  service: name=httpd state=started enabled=yes
+- name: start and enable to apache
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+  tags:
+    - apache
+
+- name: copy httpd.conf
+  copy:
+    src: httpd.conf
+    dest: /etc/httpd/conf/httpd.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart httpd
+  tags:
+    - apache
 
 - name: copy /etc/httpd/conf.d/
-  copy: src=common/etc/httpd/conf.d/ dest=/etc/httpd/conf.d/ backup=yes
+  copy:
+    src: conf.d/
+    dest: /etc/httpd/conf.d/
+    backup: yes
   notify: restart httpd
+  tags:
+    - apache
 
-- name: Makes to VirtualHost
-  template: src=virtualhost.conf dest=/etc/httpd/conf.d/{{ item.domain }}.conf
+- name: copy virtualhost confifg from template
+  template:
+    src: virtualhost.conf.j2
+    dest: /etc/httpd/conf.d/{{ item.domain }}.conf
   with_items:
     - "{{ site | default([]) }}"
   notify: restart httpd
+  tags:
+    - apache
 
-- name: Makes to VirtualHost DocumentRoot
-  file: path=/var/www/{{ item.domain }} state=directory owner={{ item.owner }} group={{ item.group }} mode=0755
+- name: make virtualhost documentroot directory
+  file:
+    path: "/var/www/{{ item.domain }}"
+    state: directory
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: 0755
   with_items:
     - "{{ site | default([]) }}"
+  tags:
+    - apache
 
-## Copy Apache Conf
-- name: Change the httpd.conf to template file ( Apache 2.4 )
-  copy: src=ver2.4/etc/httpd/ dest=/etc/httpd/ owner=root group=root mode=0644
-  notify: restart httpd
+- name: copy logrotate config
+  copy:
+    src: logrotate.d/httpd
+    dest: /etc/logrotate.d/httpd
+    owner: root
+    group: root
+    mode: 0644
+  tags:
+    - apache
 
-- name: logrotate ( Apache 2.4 )
-  copy: src=ver2.4/etc/logrotate.d/ dest=/etc/logrotate.d/ owner=root group=root mode=0644
+- name: copy monit config
+  copy:
+    src: monit.d/httpd
+    dest: /etc/monit.d/httpd
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart monit
+  tags:
+    - apache
 
-- name: monit ( CentOS7 Apache 2.4 )
-  copy: src=ver2.4/etc/monit.d/ dest=/etc/monit.d/ owner=root group=root mode=0644
-
-## Common Conifgration ( CloudWatch Logs & logrotate )
-- name: copy VirtualHost Log setting to {{ awslogs_config_dir_path }}
-  template: src=awslogs.conf dest={{ awslogs_config_dir_path }}config/apache-{{ item.domain }}.conf backup=yes
+- name: copy virtualhost log setting from template
+  template:
+    src: apache-awslogs-virtualhost.conf.j2
+    dest: /etc/awslogs/config/apache-{{ item.domain }}.conf
   with_items:
     - "{{ site | default([]) }}"
   notify: restart awslogs agent
+  when: awslogs is defined and awslogs == "enable"
+  tags:
+    - apache
 
-- name: copy Default Log setting to {{ awslogs_config_dir_path }}
-  template: src=awslogs-default.conf dest={{ awslogs_config_dir_path }}config/apache-default.conf backup=yes
+- name: copy default log setting from template
+  template:
+    src: apache-awslogs-default.conf.j2
+    dest: /etc/awslogs/config/apache-default.conf
   notify: restart awslogs agent
+  when: awslogs is defined and awslogs == "enable"
+  tags:
+    - apache

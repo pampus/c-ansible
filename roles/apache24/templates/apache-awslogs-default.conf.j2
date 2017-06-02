@@ -1,11 +1,11 @@
 [/var/log/httpd/default-access_log]
 file = /var/log/httpd/default-access_log
-log_group_name = /var/log/httpd/default-access_log
-log_stream_name = {instance_id}
+log_group_name = /var/log/httpd
+log_stream_name = default-access_log_{instance_id}
 datetime_format = %b %d %H:%M:%S
 
 [/var/log/httpd/default-error_log]
 file = /var/log/httpd/default-error_log
-log_group_name = /var/log/httpd/default-error_log
-log_stream_name = {instance_id}
+log_group_name = /var/log/httpd
+log_stream_name = default-error_log_{instance_id}
 datetime_format = %b %d %H:%M:%S
