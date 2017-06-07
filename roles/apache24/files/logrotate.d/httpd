@@ -1,7 +1,7 @@
 /var/log/httpd/*log {
     daily
     rotate 31
-    compres
+    compress
     dateext
     missingok
     notifempty
