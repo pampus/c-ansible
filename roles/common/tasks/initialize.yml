@@ -22,6 +22,15 @@
   tags:
     - motd
 
+- name: ntpd slew mode setting
+  copy:
+    src: etc/sysconfig/ntpd
+    dest: /etc/sysconfig/ntpd
+    owner: root
+    group: root
+    mode: 0755
+  notify: restart ntpd 
+
 - name: history size setting
   blockinfile:
     dest: /etc/bashrc

@@ -22,3 +22,8 @@
   service:
     name: postfix
     state: restarted
+
+- name: restart ntpd
+  service:
+    name: ntp
+    state: restarted
