@@ -19,7 +19,7 @@
 
 - name: copy awslogs.conf from template
   template:
-    src: etc/awslogs/awslogs.conf.j2
+    src: awslogs.conf.j2
     dest: /etc/awslogs/awslogs.conf
     owner: root
     group: root

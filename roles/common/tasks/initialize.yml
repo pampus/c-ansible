@@ -14,7 +14,7 @@
 
 - name: motd.sh setting
   copy:
-    src: etc/profile.d/motd.sh
+    src: motd.sh
     dest: /etc/profile.d/motd.sh
     owner: root
     group: root
@@ -24,7 +24,7 @@
 
 - name: ntpd slew mode setting
   copy:
-    src: etc/sysconfig/ntpd
+    src: sysconfig/ntpd
     dest: /etc/sysconfig/ntpd
     owner: root
     group: root
@@ -42,7 +42,7 @@
 
 - name: logrotate setting
   copy:
-    src: etc/logrotate.d/
+    src: logrotate.d/
     dest: /etc/logrotate.d/
     owner: root
     group: root

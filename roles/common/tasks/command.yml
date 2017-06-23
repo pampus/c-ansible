@@ -42,7 +42,7 @@
  
 - name: copy monit.conf from template
   template:
-    src: etc/monit.conf.j2
+    src: monit.conf.j2
     dest: /etc/monit.conf
     owner: root
     group: root
