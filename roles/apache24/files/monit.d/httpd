@@ -3,4 +3,4 @@ check process httpd
     start program "/sbin/service httpd start"
     stop program "/sbin/service httpd stop"
     if failed port 80 for 5 cycles then restart
-    if 1440 restart within 1440 cycles then timeout
+    if 960 restart within 960 cycles then timeout
