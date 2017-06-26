@@ -50,34 +50,46 @@
   tags:
     - logrotate
 
-- name: make swap
+- name: set swapfile path
   set_fact:
     swap_file_path: /swapfile
   tags:
     - swap
-- command: dd if=/dev/zero of={{ swap_file_path }} bs=2048 count=1M
+
+- name: exec dd command for swap
+  command: dd if=/dev/zero of={{ swap_file_path }} bs=2048 count=1M
   args:
     creates: '{{ swap_file_path }}'
   tags:
     - swap
-- file:
+
+- name: set swaplfile permission
+  file:
     path: '{{ swap_file_path }}'
     mode: '0600'
   tags:
     - swap
-- command: file {{ swap_file_path }}
+
+- name: check swap file
+  command: file {{ swap_file_path }}
   register: swap_file_test
   tags:
     - swap
-- command: mkswap {{ swap_file_path }}
+
+- name: make swap file
+  command: mkswap {{ swap_file_path }}
   when: swap_file_test.stdout.find('swap file') == -1
   tags:
     - swap
-- command: swapon {{ swap_file_path }}
+
+- name: exec swapon
+  command: swapon {{ swap_file_path }}
   when: ansible_swaptotal_mb < 1
   tags:
     - swap
-- mount:
+
+- name: mount swap file
+  mount:
     name: swap
     src: '{{ swap_file_path }}'
     fstype: swap

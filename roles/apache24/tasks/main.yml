@@ -33,7 +33,7 @@
   tags:
     - apache
 
-- name: copy virtualhost confifg from template
+- name: copy virtualhost config from template
   template:
     src: virtualhost.conf.j2
     dest: /etc/httpd/conf.d/{{ item.domain }}.conf
@@ -95,3 +95,8 @@
   when: awslogs is defined and awslogs == "enable"
   tags:
     - apache
+
+- include: php.yml
+  when: php is defined and php == "enable"
+  tags:
+    - php
