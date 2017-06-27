@@ -1,5 +1,7 @@
 - name: install php packages
-  yum: name={{ item }} state=present
+  yum:
+    name: "{{ item }}"
+    state: present
   with_items:
     - php70
     - php70-cli
@@ -18,7 +20,12 @@
   notify: restart httpd
 
 - name: copy php config from template
-  template: src=php.ini.j2 dest=/etc/php.ini owner=root group=root mode=0644
+  template:
+    src: php.ini.j2
+    dest: /etc/php.ini
+    owner: root
+    group: root
+    mode: 0644
   notify: restart httpd
 
 # - name: check exists PHP Composer

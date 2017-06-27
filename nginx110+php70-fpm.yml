@@ -1,7 +1,0 @@
-- hosts: localhost
-  connection: local
-  become: yes
-  roles:
-      - common
-      - nginx110
-      - php70-fpm

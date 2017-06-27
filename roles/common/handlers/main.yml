@@ -27,3 +27,8 @@
   service:
     name: ntpd
     state: restarted
+
+- name: restart datadog-agent
+  service:
+    name: datadog-agent
+    state: restarted

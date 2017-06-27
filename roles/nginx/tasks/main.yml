@@ -1,0 +1,108 @@
+- name: yum install for nginx
+  yum:
+    name: nginx
+  tags:
+    - nginx
+
+- name: start and enable nginx service
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+  tags:
+    - nginx
+
+- name: copy nginx.conf
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    backup: yes
+  notify: restart nginx
+  tags:
+    - nginx
+
+- name: copy default setting config file from template
+  template:
+    src: default.conf.j2
+    dest: /etc/nginx/conf.d/default.conf
+  when: php is undefined
+  notify: restart nginx
+  tags:
+    - nginx
+
+- name: copy virthalhost config from template
+  template:
+    src: virtualhost.conf.j2
+    dest: /etc/nginx/conf.d/{{ item.domain }}.conf
+  when: php is undefined
+  with_items:
+    - "{{ site | default([]) }}"
+  notify: restart nginx
+  tags:
+    - nginx
+
+- name: copy healthcheck contents file
+  copy:
+    src: healthcheck
+    dest: /usr/share/nginx/html/healthcheck
+    backup: yes
+  tags:
+    - nginx
+
+- name: create virtualhost documentroot
+  file:
+    path: /var/www/{{ item.domain }}
+    state: directory
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: 0755
+  with_items:
+    - "{{ site | default([]) }}"
+  tags:
+    - nginx
+
+- name: copy logrotate config
+  copy:
+    src: logrotate.d/nginx
+    dest: /etc/logrotate.d/nginx
+    owner: root
+    group: root
+    mode: 0644
+  tags:
+    - nginx
+
+- name: copy monit config
+  copy:
+    src: monit.d/nginx
+    dest: /etc/monit.d/nginx
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart monit
+  tags:
+    - nginx
+
+- name: copy virtualhost log setting from template
+  template:
+    src: nginx-awslogs-virtualhost.conf.j2
+    dest: /etc/awslogs/config/nginx-{{ item.domain }}.conf
+  with_items:
+    - "{{ site | default([]) }}"
+  notify: restart awslogs agent
+  when: awslogs is defined and awslogs == "enable"
+  tags:
+    - nginx
+
+- name: copy default log setting from template
+  template:
+    src: nginx-awslogs-default.conf.j2
+    dest: /etc/awslogs/config/nginx-default.conf
+  notify: restart awslogs agent
+  when: awslogs is defined and awslogs == "enable"
+  tags:
+    - nginx
+
+- include: php.yml
+  when: php is defined and php == "enable"
+  tags:
+    - php
