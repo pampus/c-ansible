@@ -1,0 +1,5 @@
+check process php-fpm
+    with pidfile "/var/run/php-fpm/php-fpm-7.0.pid"
+    start program "/sbin/service php-fpm start"
+    stop program "/sbin/service php-fpm stop"
+    if 960 restart within 960 cycles then timeout
