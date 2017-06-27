@@ -1,0 +1,13 @@
+---
+- name: check datadog agent
+  shell: yum list installed datadog-agent
+  register: check_dd_agent
+  failed_when: False
+  tags:
+    - datadog
+
+- name: install datadog agent
+  shell: DD_API_KEY={{ dd_api_key }} bash -c "$(curl -L https://raw.githubusercontent.com/DataDog/dd-agent/master/packaging/datadog-agent/source/install_agent.sh)"
+  when: check_dd_agent.rc == 1 and dd_api_key is defined
+  tags:
+    - datadog
