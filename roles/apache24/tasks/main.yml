@@ -96,6 +96,15 @@
   tags:
     - apache
 
+- name: copy datadog apache integration file from template
+  template:
+    src: apache.yaml.j2
+    dest: /etc/dd-agent/conf.d/apache.yaml
+  notify: restart datadog-agent
+  when: dd_api_key is defined
+  tags:
+    - apache
+
 - include: php.yml
   when: php is defined and php == "enable"
   tags:

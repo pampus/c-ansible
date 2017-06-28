@@ -102,6 +102,15 @@
   tags:
     - nginx
 
+- name: copy datadog nginx integration file from template
+  template:
+    src: nginx.yaml.j2
+    dest: /etc/dd-agent/conf.d/nginx.yaml
+  notify: restart datadog-agent
+  when: dd_api_key is defined
+  tags:
+    - nginx
+
 - include: php.yml
   when: php is defined and php == "enable"
   tags:
