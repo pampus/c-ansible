@@ -9,6 +9,9 @@ ansible-playbook -i "localhost," -c local apache24.yml -e (追加オプション
 ```
 
 # 標準仕様
+## 依存関係
+[common](https://github.com/cloudpack/c-ansible/tree/master/roles/common) が自動適用される
+
 ## 構成
 - yumでの通常インストール
 
