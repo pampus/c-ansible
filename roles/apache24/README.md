@@ -13,7 +13,33 @@ ansible-playbook -i "localhost," -c local apache24.yml -e (追加オプション
 - yumでの通常インストール
 
 ## Apache設定
-- デフォルトからの差分と代表的な設定値は[Default Parameter for Apache]に記載
+- デフォルトからの差分と代表的な設定値
+### httpd.conf
+|Parameter|Value|Changable?|
+| ------- |-------|:-----:|
+|Listen   |80     |x      |
+|User     |apache |x      |
+|Group    |apache |x      |
+|ServerTokens|ProductOnly|x      |
+|DocumentRoot(Default)|/var/www/html|x      |
+|AllowOverride(/var/www/)|All|x      |
+|DirectoryIndex|index.html index.htm index.php index.cgi|x      |
+|ErrorLog|logs/error_log|x      |
+|LogFormat|"%{X-Forwarded-For}i %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined-elb|x      |
+|CustomLog|"logs/access_log" combined|x      |
+|ScriptAlias|/cgi-bin/ "/var/www/cgi-bin/"|x      |
+|AddDefaultCharset|UTF-8|x      |
+|TraceEnable|Off|x      |
+|ExtendedStatus|On|x      |
+|IncludeOptional|conf.d/*.conf|x      |
+
+### (VirtualhostName).conf
+|Parameter|Value|Changeable?|
+| ------- |-------|:-----:|
+|ServerName   |`VirtualhostName`                             |x      |
+|DocumentRoot |/var/www/`VirtualhostName`/                   |x      |
+|CustomLog    |logs/`VirtualhostName`-access_log combined-elb|x      |
+|ErrorLog     |`VirtualhostName`-error_log                   |x      |
 
 ## ログローテーション
 - logrotateで31世代保管（日次）
@@ -89,7 +115,7 @@ EOF
   
 ### 使用方法
 - コマンド引数による対応
-  - `-e dd_api_key=（DatadogのAPI Key)`
+  - `-e dd_api_key=（DatadogのAPI Key)`
 - ファイルへの変数記載
 ```bash
 cat <<EOF > c-ansible/group_vars/all.yml
@@ -104,9 +130,8 @@ EOF
 
 ### 使用方法
 - コマンド引数による対応
-  - `-e ｐｈｐ=enable`
-  - タイムゾーンを変更する場合（デフォルトはAsia/Tokyo）
-    - `-e timezone=XXX/XXX`
+  - `-e ｐｈｐ=enable`- タイムゾーンを変更する場合（デフォルトはAsia/Tokyo）
+    - `-e timezone=XXX/XXX`
 - ファイルへの変数記載
 ```bash
 cat <<EOF > c-ansible/group_vars/all.yml
@@ -116,32 +141,5 @@ php: enable
 EOF
 ```
 
-# Default Parameter for Apache
-## httpd.conf
-|Parameter|Require|Default|Changed|
-| ------- |:-----:|-------|:-----:|
-|Listen   |       |80     |x      |
-|User     |       |apache |x      |
-|Group    |       |apache |x      |
-|ServerTokens|       |ProductOnly|x      |
-|DocumentRoot(Default)|       |/var/www/html|x      |
-|AllowOverride(/var/www/)|       |All|x      |
-|DirectoryIndex|       |index.html index.htm index.php index.cgi|x      |
-|ErrorLog|       |logs/error_log|x      |
-|LogFormat|       |"%{X-Forwarded-For}i %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined-elb|x      |
-|CustomLog|       |"logs/access_log" combined|x      |
-|ScriptAlias|       |/cgi-bin/ "/var/www/cgi-bin/"|x      |
-|AddDefaultCharset|       |UTF-8|x      |
-|TraceEnable|       |Off|x      |
-|ExtendedStatus|       |On|x      |
-|IncludeOptional|       |conf.d/*.conf|x      |
-||       ||x      |
 
-## VirtualhostName.conf
-|Parameter|Require|Default|Changed|
-| ------- |:-----:|-------|:-----:|
-|ServerName   |       |www.test1.com                                 |o      |
-|DocumentRoot |       |/var/www/www.test1.com/                       |o      |
-|CustomLog    |       |logs/www.test1.com-access_log combined-elb|o      |
-|ErrorLog     |       |logs/www.test1.com-error_log              |o      |
 
