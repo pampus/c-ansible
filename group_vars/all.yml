@@ -1,0 +1,15 @@
+aws_region: ap-northeast-1
+
+# Enable CloudWatch Logs
+# awslogs: enable
+
+# Enable VirtualHost for Apache and Nginx
+# site:
+#   - { domain: "www.test1.com", owner: "apache", group: "apache" }
+#   - { domain: "www.test2.co.jp", owner: "apache", group: "apache" }
+
+### Install PHP for Apache and Nginx
+# php: enable
+
+### Install Datadog Agent and Apache or Nginx Integration 
+# dd_api_key: xxxxxxxxxxxxxxxxxxxxxxxxxxx
