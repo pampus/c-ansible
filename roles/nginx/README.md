@@ -142,6 +142,6 @@ EOF
 ### ログの外部保存
 - Cloudwatch Logsによるログの外部保存
 - 対象
-  - /var/log/php-fpm/error.log
+  - /var/log/php-fpm/error.log
   
 
