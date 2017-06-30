@@ -64,7 +64,7 @@ EOF
 
 ### 使用方法
 - コマンド引数による対応
-  - `-e '{ "site":[{"domain":"www.test1.com", "owner":"nginx", "group":"nginx"},{"domain":"www.test2.co.jp", "owner":"nginx", "group":"nginx"}]}'`
+  - `-e '{ "site":[{"domain":"www.test1.com", "owner":"nginx", "group":"nginx"},{"domain":"www.test2.co.jp", "owner":"nginx", "group":"nginx"}]}'`
 - ファイルへの変数記載
 ```bash
 cat <<EOF > c-ansible/group_vars/all.yml
