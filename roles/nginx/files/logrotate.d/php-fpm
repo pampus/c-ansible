@@ -1,6 +1,6 @@
 /var/log/php-fpm/*log {
     daily
-    rotate 7
+    rotate 31
     missingok
     notifempty
     sharedscripts
