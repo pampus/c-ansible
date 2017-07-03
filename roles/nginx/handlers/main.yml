@@ -8,3 +8,7 @@
     name: php-fpm
     state: restarted
 
+- name: restart tomcat
+  service:
+    name: tomcat8
+    state: restarted

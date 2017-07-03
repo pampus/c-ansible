@@ -1,4 +1,4 @@
-check process tomcat
+check process tomcat8
     with pidfile "/var/run/tomcat8.pid"
     start program "/sbin/service tomcat8 start"
     stop program "/sbin/service tomcat8 stop"
