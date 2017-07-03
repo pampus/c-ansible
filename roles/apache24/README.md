@@ -144,5 +144,36 @@ php: enable
 EOF
 ```
 
+## Tomcat対応
+### 概要
+- Tomcat8実行環境（パッケージ）のインストール
 
+### 使用方法
+- コマンド引数による対応
+  - `-e tomcat=enable`
+- ファイルへの変数記載
+```bash
+cat <<EOF > c-ansible/group_vars/all.yml
+tomcat: enable
+EOF
+```
+### Apache設定
+- 変更なし
+
+### ログローテーション
+- logrotateで31世代保管（日次）
+- 対象
+  - /var/log/tomcat8/catalina.out
+
+### 自動復旧
+- monitによるtomcat8の監視/自動復旧を実装
+  - 1分間隔で5回接続不可の場合、サービスの再起動
+- 障害判定条件
+  - プロセスチェック
+  - ローカルでTCP/8080のチェック
+  
+### ログの外部保存
+- Cloudwatch Logsによるログの外部保存
+- 対象
+  - /var/log/tomcat8/catalina.out
 
