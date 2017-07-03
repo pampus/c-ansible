@@ -1,7 +1,0 @@
-- hosts: localhost
-  connection: local
-  become: yes
-  roles:
-      - common
-      - apache24
-      - tomcat8
