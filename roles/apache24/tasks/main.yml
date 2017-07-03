@@ -109,3 +109,8 @@
   when: php is defined and php == "enable"
   tags:
     - php
+
+- include: tomcat.yml
+  when: tomcat is defined and tomcat == "enable"
+  tags:
+    - tomcat

@@ -1,0 +1,51 @@
+- name: install Tomcat Application Server packages
+  yum:
+    name: "{{ item }}"
+  with_items:
+    - java-1.8.0-openjdk
+    - tomcat8
+    - tomcat8-webapps
+
+- name: remove other version of Tomcat and jdk packages
+  yum:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - java-1.6.0-openjdk
+    - java-1.6.0-openjdk-headless
+    - java-1.7.0-openjdk
+    - java-1.7.0-openjdk-headless
+    - tomcat6*
+    - tomcat7*
+
+- name: start and enable to tomcat
+  service:
+    name: tomcat8
+    state: started
+    enabled: yes
+
+- name: copy tomcat log setting from template
+  template:
+    src: tomcat-awslogs.conf.j2
+    dest: /etc/awslogs/config/tomcat.conf
+  with_items:
+    - "{{ site | default([]) }}"
+  notify: restart awslogs agent
+  when: awslogs is defined and awslogs == "enable"
+
+- name: copy logrotate config
+  copy:
+    src: logrotate.d/tomcat8
+    dest: /etc/logrotate.d/tomcat8
+    owner: root
+    group: root
+    mode: 0644
+
+- name: copy monit config
+  copy:
+    src: monit.d/tomcat
+    dest: /etc/monit.d/tomcat
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart monit
