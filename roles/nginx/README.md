@@ -16,18 +16,13 @@ ansible-playbook -i "localhost," -c local nginx.yml -e (追加オプション) -
 - yumでの通常インストール
 
 ## Nginx設定
-- デフォルトからの差分と代表的な設定値
 ### conf.d/default.conf
-|Parameter|Value|Changeable?|
-| ------- |-------|:-----:|
-|Listen   |80     |x      |
-
+- [PHP無効時](templates/default.conf.j2)
+- [PHP有効時](templates/default-php.conf.j2)
 
 ### conf.d/(VirtualhostName).conf
-|Parameter|Value|Changeable?|
-| ------- |-------|:-----:|
-|ServerName   |`VirtualhostName`                             |x      |
-
+- [PHP無効時](templates/virtualhost.conf.j2)
+- [PHP有効時](templates/virtualhost-php.conf.j2)
 
 ## ログローテーション
 - logrotateで31世代保管（日次）
