@@ -18,7 +18,7 @@ ansible-playbook -i "localhost," -c local nginx.yml -e (追加オプション) -
 ## Nginx設定
 - デフォルトからの差分と代表的な設定値
 ### conf.d/default.conf
-|Parameter|Value|Changable?|
+|Parameter|Value|Changeable?|
 | ------- |-------|:-----:|
 |Listen   |80     |x      |
 
