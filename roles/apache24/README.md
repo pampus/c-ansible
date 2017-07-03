@@ -18,7 +18,7 @@ ansible-playbook -i "localhost," -c local apache24.yml -e (追加オプション
 ## Apache設定
 - デフォルトからの差分と代表的な設定値
 ### httpd.conf
-|Parameter|Value|Changable?|
+|Parameter|Value|Changeable?|
 | ------- |-------|:-----:|
 |Listen   |80     |x      |
 |User     |apache |x      |
