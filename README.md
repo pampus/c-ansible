@@ -1,36 +1,32 @@
-# 前提
-Supprt OS : Amazon Linux AMI 2016.09.0
+# Prerequisites
+## Supprt OS
+- Amazon Linux
 
-# 使い方
-UserDataに以下のコードを挿入し実行してください。
-CFn内のUserDataでも可です。
+# Usage
+UserDataに以下のようなコードを挿入し実行してください。
 
-## UserData Version
     #!/bin/sh
-    yum install -y git
+    yum update -y
+    pip install ansible
+    yum install -y git gcc openssl-devel libffi-devel
     git clone https://github.com/cloudpack/c-ansible.git
-    touch /var/tmp/catalogpack_vars.txt
-    ## 以下、xxx.shの変数を変更したい時は/var/tmp/catalogpack_vars.txtに変数を定義する
+    /usr/local/bin/ansible-playbook -i "localhost," -c local c-ansible/common.yml\
+      -e aws_region=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed -e 's/.$//g') \
+      -e awslogs=enable
 
-    sh c-ansible/xxx.sh
+# Playbook
+- [common](https://github.com/cloudpack/c-ansible/tree/master/roles/common)
+  - 標準的な設定
+- [apache24](https://github.com/cloudpack/c-ansible/tree/master/roles/apache24)
+  - Apache2.4
+  - PHP、Tomcatにも対応
+- [nginx](https://github.com/cloudpack/c-ansible/tree/master/roles/nginx)
+  - Nginx
+  - PHP、Tomcatにも対応
+- [wordpress](https://github.com/cloudpack/c-ansible/tree/master/roles/wordpress)
 
-# 必要なIAMロール権限
+# IAM Role
+### EC2インスタンスに必要なIAMロール権限
 - AmazonEC2RoleforSSM
 - CloudWatchLogsFullAccess
 
-# ルール
-## 各Role追加時には以下を考慮し追加してください
-- ログファイルが出力される場合
--- logrotateのconfファイルを配置する
--- CloudWatch Logs Agentのconfファイルを配置する
-- プロセスがある場合
--- monitのconfを配置する
-
-# CloudFormationとの線引
-疎結合性を高めるために以下の線引で開発する
-## Ansible側
-* xxx.ymlを作成の際に、xxx.shも作成する
-* xxx.shにはuserdataで実行して欲しい処理を記載する
-* CloudFormation側のuserdataの定義で、xxx.shをcurlでDLし、ローカル実行させる
-* CloudFormationから変数を渡したい場合は、/var/tmp/catalogpack_vars.txtに変数を埋め込んでもらう
-* xxx.shの冒頭で/var/tmp/catalogpack_vars.txtを読み込み、CloudFormationから変数を受け取る
