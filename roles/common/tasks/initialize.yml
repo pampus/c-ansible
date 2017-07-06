@@ -63,6 +63,12 @@
   tags:
     - swap
 
+- name: wait dd command complete
+  pause:
+    seconds: 90
+  tags:
+    - swap
+    
 - name: set swaplfile permission
   file:
     path: '{{ swap_file_path }}'
