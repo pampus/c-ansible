@@ -65,7 +65,7 @@
 
 - name: wait dd command complete
   pause:
-    seconds: 90
+    seconds: 120
   tags:
     - swap
     
