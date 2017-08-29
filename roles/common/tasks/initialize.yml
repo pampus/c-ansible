@@ -8,7 +8,9 @@
     dest: /etc/localtime
     state: link
     force: yes
-  notify: restart rsyslog agent 
+  notify: 
+  　　　　- restart rsyslog agent 
+    - restart crond
   tags:
     - timezone
 
