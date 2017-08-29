@@ -32,3 +32,9 @@
   service:
     name: datadog-agent
     state: restarted
+
+- name: restart crond
+  service:
+    name: crond
+    state: restarted
+  
