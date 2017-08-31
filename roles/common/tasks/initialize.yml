@@ -9,7 +9,7 @@
     state: link
     force: yes
   notify: 
-  　　　　- restart rsyslog agent 
+    - restart rsyslog agent 
     - restart crond
   tags:
     - timezone
