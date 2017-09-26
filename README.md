@@ -7,8 +7,8 @@ UserDataに以下のようなコードを挿入し実行してください。
 
     #!/bin/sh
     yum update -y
-    pip install ansible
     yum install -y git gcc openssl-devel libffi-devel
+    pip install ansible
     git clone https://github.com/cloudpack/c-ansible.git
     /usr/local/bin/ansible-playbook -i "localhost," -c local c-ansible/common.yml\
       -e aws_region=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed -e 's/.$//g') \
